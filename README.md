@@ -1,4 +1,4 @@
-# HmEditor Admin Service - 惠每电子病历编辑器模板制作工具-后台
+# HmEditor 模板制作工具后端 <br/>
 
 [![Java](https://img.shields.io/badge/Java-1.8-orange.svg)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.6.14-brightgreen.svg)](https://spring.io/projects/spring-boot)
