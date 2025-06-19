@@ -1,0 +1,66 @@
+spring:
+  data:
+    mongodb:
+      host: mongodb
+      username: HmEditor
+      password: HmEditor2025
+      database: HmEditor
+      port: 27017
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  main:
+    allow-circular-references: true
+
+server:
+  servlet:
+    context-path: /hmEditor/admin-service
+  port: 13071
+
+http:
+  connectionManager:
+    maxTotal: 200
+    maxPerRoute: 20
+  connection:
+    connectTimeout: 5000
+    readTimeout: 60000
+    requestTimeout: 3000
+
+logger:
+  showParam: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  data:
+    mongodb:
+      host: xx.xx.xx.xx
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  main:
+    allow-circular-references: true
+
+logger:
+  showParam: false
+  dbSwitch: true
+
+logging:
+  level:
+    org.springframework.data.mongodb.core: DEBUG
+
