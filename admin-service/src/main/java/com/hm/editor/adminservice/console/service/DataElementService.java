@@ -5,6 +5,8 @@ import com.hm.editor.adminservice.console.repository.DataElementRepository;
 import com.hm.editor.adminservice.console.utils.FileUtils;
 import com.hm.editor.common.utils.FileUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +21,7 @@ import static com.hm.editor.common.utils.DateUtil.parseUTC;
 @Service
 @Slf4j
 public class DataElementService {
+    private static final Logger log = LoggerFactory.getLogger(DataElementService.class);
     @Autowired
     private DataElementRepository dataElementRepository;
 

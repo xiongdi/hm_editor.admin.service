@@ -43,6 +43,70 @@ public class EmrDataElementAdmin {
     private String typeItems;
     private String typeCode;
 
+    // Getter and Setter methods (manually added due to Lombok compatibility issues with JDK 25)
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getDataSourceName() {
+        return dataSourceName;
+    }
+
+    public void setDataSourceName(String dataSourceName) {
+        this.dataSourceName = dataSourceName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTypeItems() {
+        return typeItems;
+    }
+
+    public void setTypeItems(String typeItems) {
+        this.typeItems = typeItems;
+    }
+
+    public String getTypeCode() {
+        return typeCode;
+    }
+
+    public void setTypeCode(String typeCode) {
+        this.typeCode = typeCode;
+    }
+
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    public void setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+    }
+
+    public String getSearchOption() {
+        return searchOption;
+    }
+
+    public void setSearchOption(String searchOption) {
+        this.searchOption = searchOption;
+    }
+
+    public String getSearchPair() {
+        return searchPair;
+    }
+
+    public void setSearchPair(String searchPair) {
+        this.searchPair = searchPair;
+    }
 
     public List<Object> toList(){
 
