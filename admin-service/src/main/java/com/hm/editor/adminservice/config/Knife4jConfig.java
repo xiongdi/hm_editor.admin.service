@@ -1,36 +1,32 @@
 package com.hm.editor.adminservice.config;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.oas.annotations.EnableOpenApi;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
-@EnableOpenApi
 public class Knife4jConfig {
 
-    @Bean
-    public Docket createRestApi() {
-        return new Docket(DocumentationType.OAS_30)
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.hm.editor.adminservice"))
-                .paths(PathSelectors.any())
-                .build();
-    }
-
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
+  @Bean
+  public OpenAPI customOpenAPI() {
+    return new OpenAPI()
+        .info(
+            new Info()
                 .title("HmEditor Admin Service API")
                 .description("HmEditor管理服务接口文档")
-                .contact(new Contact("HmEditor", "", ""))
                 .version("4.2.10")
-                .build();
-    }
+                .contact(new Contact().name("HmEditor").email("")));
+  }
+
+  @Bean
+  public GroupedOpenApi publicApi() {
+    return GroupedOpenApi.builder()
+        .group("default")
+        .pathsToMatch("/**")
+        .packagesToScan("com.hm.editor.adminservice")
+        .build();
+  }
 }

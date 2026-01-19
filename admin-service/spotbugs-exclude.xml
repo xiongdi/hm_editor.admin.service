@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- 排除Lombok生成的代码 -->
+    <Match>
+        <Source name="~.*\.lombok\..*"/>
+    </Match>
+    
+    <!-- 排除Spring Boot自动配置类 -->
+    <Match>
+        <Source name="~.*\.config\..*"/>
+    </Match>
+    
+    <!-- 排除DTO类中的字段未使用警告 -->
+    <Match>
+        <Class name="~.*\.dto\..*"/>
+        <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+    </Match>
+    
+    <!-- 排除实体类中的字段未使用警告 -->
+    <Match>
+        <Class name="~.*\.domain\..*"/>
+        <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+    </Match>
+    
+    <!-- 允许使用System.out.println（用于日志） -->
+    <Match>
+        <Bug pattern="DM_DEFAULT_ENCODING"/>
+    </Match>
+    
+    <!-- 允许使用hashCode和equals的默认实现（某些情况下） -->
+    <Match>
+        <Bug pattern="EQ_DOESNT_OVERRIDE_EQUALS"/>
+    </Match>
+    
+    <!-- 允许使用hashCode和equals的默认实现（某些情况下） -->
+    <Match>
+        <Bug pattern="HE_EQUALS_USE_HASHCODE"/>
+    </Match>
+</FindBugsFilter>

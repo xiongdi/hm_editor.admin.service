@@ -14,231 +14,238 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.14</version>
+		<version>2.7.18</version>
 		<relativePath/>
 	</parent>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		
+		<!-- 代码质量工具版本 -->
+		<maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
+		<checkstyle.version>10.12.5</checkstyle.version>
+		<pmd.version>3.21.0</pmd.version>
+		<spotbugs.version>4.9.8.2</spotbugs.version>
+		<jacoco.version>0.8.11</jacoco.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.yaml</groupId>
-			<artifactId>snakeyaml</artifactId>
-            <version>1.33</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.83</version>
-		</dependency>
-		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.34</version>
+			<version>1.18.42</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>com.fasterxml.jackson.core</groupId>
-					<artifactId>jackson-databind</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-data-mongodb</artifactId>
-					<groupId>org.springframework.data</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>31.1-android</version>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+			<version>5.8.43</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-redis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>net.sf.json-lib</groupId>
-			<artifactId>json-lib</artifactId>
-			<version>2.4</version>
-			<classifier>jdk15</classifier>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-collections</groupId>
-					<artifactId>commons-collections</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<version>2.3.2</version>
-			<exclusions>
-				<exclusion>
-					<groupId>c3p0</groupId>
-					<artifactId>c3p0</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>2.2.2</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.jsoup</groupId>
-			<artifactId>jsoup</artifactId>
-			<version>1.15.3</version>
-		</dependency>
-		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-			<version>4.0.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jpedal</groupId>
-			<artifactId>OpenViewerFX</artifactId>
-			<version>6.6.14</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.13.4.2</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.9.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-mongodb</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>easyexcel</artifactId>
-			<version>2.1.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.xmlbeans</groupId>
-					<artifactId>xmlbeans</artifactId>
-				</exclusion>
-				<exclusion>
-					<artifactId>commons-beanutils</artifactId>
-					<groupId>commons-beanutils</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>commons-compress</artifactId>
-					<groupId>org.apache.commons</groupId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.poi</groupId>
-					<artifactId>poi</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.poi</groupId>
-					<artifactId>poi</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.poi</groupId>
-					<artifactId>poi-ooxml</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>5.2.2</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>5.2.2</version>
-		</dependency>
-		<dependency>
-			<artifactId>commons-compress</artifactId>
-			<groupId>org.apache.commons</groupId>
-			<version>1.21</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-csv</artifactId>
-			<version>1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient-cache</artifactId>
-			<version>4.5.13</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpmime</artifactId>
-			<version>4.5.13</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.github.albfernandez</groupId>
-			<artifactId>javadbf</artifactId>
-			<version>1.9.2</version>
+			<version>5.5.1</version>
 		</dependency>
 
 		<!-- knife4j -->
 		<dependency>
 			<groupId>com.github.xiaoymin</groupId>
-			<artifactId>knife4j-spring-boot-starter</artifactId>
-			<version>3.0.3</version>
+			<artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+			<version>4.5.0</version>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			
+			<!-- Maven Compiler Plugin -->
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.11.0</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<encoding>UTF-8</encoding>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
+			
+			<!-- Checkstyle - 代码风格检查 -->
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven-checkstyle-plugin.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>${checkstyle.version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<configLocation>checkstyle.xml</configLocation>
+					<consoleOutput>true</consoleOutput>
+					<failsOnError>true</failsOnError>
+					<linkXRef>false</linkXRef>
+					<includeTestSourceDirectory>false</includeTestSourceDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
-
+			
+			<!-- PMD - 代码质量分析 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>${pmd.version}</version>
+				<configuration>
+					<rulesets>
+						<ruleset>/category/java/bestpractices.xml</ruleset>
+						<ruleset>/category/java/codestyle.xml</ruleset>
+						<ruleset>/category/java/design.xml</ruleset>
+						<ruleset>/category/java/errorprone.xml</ruleset>
+						<ruleset>/category/java/performance.xml</ruleset>
+						<ruleset>/category/java/security.xml</ruleset>
+					</rulesets>
+					<excludeRoots>
+						<excludeRoot>target/generated-sources</excludeRoot>
+					</excludeRoots>
+					<targetJdk>${java.version}</targetJdk>
+					<failOnViolation>true</failOnViolation>
+					<printFailingErrors>true</printFailingErrors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>pmd-check</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- SpotBugs - Bug检测 -->
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>${spotbugs.version}</version>
+				<configuration>
+					<effort>Max</effort>
+					<threshold>Low</threshold>
+					<xmlOutput>true</xmlOutput>
+					<excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+					<failOnError>true</failOnError>
+				</configuration>
+				<executions>
+					<execution>
+						<id>spotbugs-check</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- JaCoCo - 代码覆盖率 -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<executions>
+					<execution>
+						<id>jacoco-initialize</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-site</id>
+						<phase>package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<rule>
+									<element>PACKAGE</element>
+									<limits>
+										<limit>
+											<counter>LINE</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>0.50</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- Spotless - 代码格式化 -->
+			<!-- 已升级到最新版本 2.46.1，支持Java 25 -->
+			<!-- 也可以使用IDE格式化功能（推荐） -->
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>2.46.1</version>
+				<configuration>
+					<skip>false</skip>
+					<java>
+						<googleJavaFormat>
+							<version>1.33.0</version>
+							<style>GOOGLE</style>
+						</googleJavaFormat>
+						<removeUnusedImports/>
+					</java>
+				</configuration>
+				<!-- 不在构建流程中自动执行，需要手动运行 -->
+				<!-- 
+				<executions>
+					<execution>
+						<id>spotless-check</id>
+						<phase>none</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				-->
+			</plugin>
 		</plugins>
 	</build>
 

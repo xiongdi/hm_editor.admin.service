@@ -1,21 +1,26 @@
 package com.hm.editor.exception;
 
-
-
 public enum ResponseStatus {
-    SUCCESS(10000,"请求成功"),FAILED(10001,null),UNAUTHORIZED_ERROR(10401,null),NOT_FOUND_ERROR(10404,"未找到接口"),ERROR(10500,"内部异常"),EMR_ERROR(10006,null);
-    private int code;
-    private String msg;
-    ResponseStatus(int code,String msg){
-        this.code = code;
-        this.msg = msg;
-    }
+  SUCCESS(10000, "请求成功"),
+  FAILED(10001, null),
+  UNAUTHORIZED_ERROR(10401, null),
+  NOT_FOUND_ERROR(10404, "未找到接口"),
+  ERROR(10500, "内部异常"),
+  EMR_ERROR(10006, null);
 
-    public int getCode() {
-        return code;
-    }
+  private int code;
+  private String msg;
 
-    public String getMsg() {
-        return msg;
-    }
+  ResponseStatus(int code, String msg) {
+    this.code = code;
+    this.msg = msg;
+  }
+
+  public int getCode() {
+    return code;
+  }
+
+  public String getMsg() {
+    return msg;
+  }
 }

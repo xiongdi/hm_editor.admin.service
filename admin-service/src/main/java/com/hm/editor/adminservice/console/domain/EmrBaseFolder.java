@@ -1,25 +1,23 @@
 package com.hm.editor.adminservice.console.domain;
 
-import com.alibaba.fastjson.serializer.JSONSerializer;
-import com.alibaba.fastjson.serializer.ObjectSerializer;
-import org.bson.types.ObjectId;
-
-import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Type;
-
+import java.util.Date;
+import org.bson.types.ObjectId;
 
 /**
  * @author:wanglei
  * @date:2020/10/15
  * @desc:
  */
-public class EmrBaseFolder implements Serializable,ObjectSerializer {
+public class EmrBaseFolder implements Serializable {
   private static final long serialVersionUID = 89843781789L;
   private ObjectId _id;
   private String name;
   private int order;
   private String idStr;
+  private Date createTime;
+  private String status;
+  private String remark;
 
   public ObjectId get_id() {
     return _id;
@@ -53,23 +51,39 @@ public class EmrBaseFolder implements Serializable,ObjectSerializer {
     this.idStr = idStr;
   }
 
+  public Date getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Date createTime) {
+    this.createTime = createTime;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public String getRemark() {
+    return remark;
+  }
+
+  public void setRemark(String remark) {
+    this.remark = remark;
+  }
+
   @Override
   public String toString() {
-    return "{name:"+name+"}";
+    return "{name:" + name + "}";
   }
 
-  @Override
-  public void write(JSONSerializer serializer, Object object, Object fieldName, Type fieldType, int features) throws IOException {
-
-    System.out.println(fieldName);
-    System.out.println(object);
-    serializer.write(object);
-  }
-
-  public void initIDStr(){
-    if(_id == null){
+  public void initIDStr() {
+    if (_id == null) {
       idStr = "";
-    }else {
+    } else {
       idStr = _id.toHexString();
     }
   }

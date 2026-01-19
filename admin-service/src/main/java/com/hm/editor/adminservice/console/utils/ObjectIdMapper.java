@@ -7,12 +7,12 @@ import java.lang.annotation.Target;
 
 /**
  * @PROJECT_NAME:service_spce
+ *
  * @author:wanglei
- * @date:2021/1/21 1:54 PM
- * @Description:${DESC}
+ * @date:2021/1/21 1:54 PM @Description:${DESC}
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ObjectIdMapper {
-    String name() default "";
+  String name() default "";
 }
