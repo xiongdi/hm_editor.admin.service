@@ -36,16 +36,20 @@ public class DatasourceSetRepository {
             unwind("ds", true),
             project(fields)
         ).withOptions(newAggregationOptions().allowDiskUse(true).build());
-        return mongoTemplate
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> res = (List<Map<String, Object>>) (List<?>) mongoTemplate
             .aggregate(agg, ContantUtil.DS_REFRENCE_COLLECTION_NAME, Map.class)
             .getMappedResults();
+        return res;
     }
 
     public List<Map<String, Object>> getDsSetVerData(List<String> setCode) {
-        return mongoTemplate.find(
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> res = (List<Map<String, Object>>) (List<?>) mongoTemplate.find(
             Query.query(Criteria.where("code").in(setCode).and("type").is("数据集")),
             Map.class,
             ContantUtil.DS_REFRENCE_COLLECTION_NAME
         );
+        return res;
     }
 }

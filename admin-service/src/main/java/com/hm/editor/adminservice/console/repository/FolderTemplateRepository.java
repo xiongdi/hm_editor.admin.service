@@ -119,7 +119,11 @@ public class FolderTemplateRepository {
             unwind("folder"),
             project("templateName", "type", "isForbidMultiple", "folder.name")
         );
-        return template.aggregate(agg, "emrBaseTemplate", Map.class).getMappedResults();
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> res = (List<Map<String, Object>>) (List<?>) template
+            .aggregate(agg, "emrBaseTemplate", Map.class)
+            .getMappedResults();
+        return res;
     }
 
     public boolean saveBaseTemplateHtml(String id, String html) {

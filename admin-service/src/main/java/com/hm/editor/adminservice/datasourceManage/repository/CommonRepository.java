@@ -37,7 +37,13 @@ public class CommonRepository {
         if (sort != null) {
             q.with(sort);
         }
-        return mongoTemplate.find(q, Map.class, colName);
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> res = (List<Map<String, Object>>) (List<?>) mongoTemplate.find(
+            q,
+            Map.class,
+            colName
+        );
+        return res;
     }
 
     public Map<String, Object> findOne(String colName, Criteria cri) {
@@ -53,7 +59,11 @@ public class CommonRepository {
             Aggregation.skip((pageNo - 1) * pageSize),
             Aggregation.limit(pageNo * pageSize)
         ).withOptions(newAggregationOptions().allowDiskUse(true).build());
-        return mongoTemplate.aggregate(agg, colName, Map.class).getMappedResults();
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> res = (List<Map<String, Object>>) (List<?>) mongoTemplate
+            .aggregate(agg, colName, Map.class)
+            .getMappedResults();
+        return res;
     }
 
     public void insert(Map<String, Object> d, String colName) {
@@ -127,7 +137,11 @@ public class CommonRepository {
         Aggregation _agg = newAggregation(aggs).withOptions(
             newAggregationOptions().allowDiskUse(true).build()
         );
-        return mongoTemplate.aggregate(_agg, name, Map.class).getMappedResults();
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> res = (List<Map<String, Object>>) (List<?>) mongoTemplate
+            .aggregate(_agg, name, Map.class)
+            .getMappedResults();
+        return res;
     }
 
     public Object maxVal(String name, Criteria criteria, String fieldName) {
@@ -137,7 +151,10 @@ public class CommonRepository {
             limit(1)
         ).withOptions(newAggregationOptions().allowDiskUse(true).build());
 
-        List<Map<String, Object>> r = mongoTemplate.aggregate(agg, name, Map.class).getMappedResults();
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> r = (List<Map<String, Object>>) (List<?>) mongoTemplate
+            .aggregate(agg, name, Map.class)
+            .getMappedResults();
         Map<String, Object> m;
         if (r.isEmpty() || (m = r.get(0)) == null) {
             return null;

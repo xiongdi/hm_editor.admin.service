@@ -26,8 +26,28 @@ public class FolderManagerController {
 
     @Operation(summary = "获取基础目录")
     @RequestMapping(value = "/baseFolders", method = RequestMethod.GET)
-    public ApiResult<Object> getAll(@RequestParam("folderName") String folderName) {
+    public ApiResult<Object> getAll(
+        @Parameter(description = "目录名称（模糊匹配）") @RequestParam(
+            value = "folderName",
+            required = false,
+            defaultValue = ""
+        ) String folderName
+    ) {
         return ApiResult.success(folderManagerService.findAll(folderName));
+    }
+
+    @Operation(summary = "分页获取基础目录")
+    @RequestMapping(value = "/baseFoldersPage", method = RequestMethod.GET)
+    public ApiResult<Object> getPage(
+        @Parameter(description = "目录名称（模糊匹配）") @RequestParam(
+            value = "folderName",
+            required = false,
+            defaultValue = ""
+        ) String folderName,
+        @Parameter(description = "页码") @RequestParam("pageNo") int pageNo,
+        @Parameter(description = "每页大小") @RequestParam("pageSize") int pageSize
+    ) {
+        return ApiResult.success(folderManagerService.findPage(folderName, pageNo, pageSize));
     }
 
     @Operation(summary = "移动目录")

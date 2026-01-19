@@ -90,7 +90,13 @@ public class DataElementRepository {
         query.addCriteria(
             Criteria.where("dataSourceName").is(dataSourceName).and("templateName").is(templateName)
         );
-        list = template.find(query, Map.class, FOLDER_NAME);
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> res = (List<Map<String, Object>>) (List<?>) template.find(
+            query,
+            Map.class,
+            FOLDER_NAME
+        );
+        list = res;
         return list;
     }
 

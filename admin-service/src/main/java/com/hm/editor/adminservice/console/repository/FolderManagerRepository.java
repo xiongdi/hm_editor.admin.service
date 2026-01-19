@@ -21,17 +21,35 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class FolderManagerRepository {
 
-    private static final String FOLDER_NAME = "emrBaseFolder";
-
     @Autowired
     MongoTemplate template;
 
-    public List<EmrBaseFolder> findAll(String folderName) {
+    private Query buildFolderQuery(String folderName) {
         Query q = new Query();
         if (StringUtils.isNotBlank(folderName)) {
             q.addCriteria(Criteria.where("name").regex(folderName));
         }
+        return q;
+    }
+
+    public List<EmrBaseFolder> findAll(String folderName) {
+        Query q = buildFolderQuery(folderName);
         return template.find(q.with(Sort.by(Sort.Direction.ASC, "order")), EmrBaseFolder.class);
+    }
+
+    public long count(String folderName) {
+        Query q = buildFolderQuery(folderName);
+        return template.count(q, EmrBaseFolder.class);
+    }
+
+    public List<EmrBaseFolder> findPage(String folderName, int pageNo, int pageSize) {
+        int safePageNo = Math.max(pageNo, 1);
+        int safePageSize = Math.max(pageSize, 1);
+        Query q = buildFolderQuery(folderName);
+        q.with(Sort.by(Sort.Direction.ASC, "order"))
+            .skip((long) (safePageNo - 1) * safePageSize)
+            .limit(safePageSize);
+        return template.find(q, EmrBaseFolder.class);
     }
 
     public boolean exitor(List<EmrBaseFolder> folders) {

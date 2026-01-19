@@ -2,8 +2,11 @@ package com.hm.editor.adminservice.console.service;
 
 import com.hm.editor.adminservice.console.domain.EmrBaseFolder;
 import com.hm.editor.adminservice.console.repository.FolderManagerRepository;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,24 @@ public class FolderManagerService {
         List<EmrBaseFolder> baseFolders = folderManagerRepository.findAll(folderName);
         baseFolders.forEach(EmrBaseFolder::initIDStr);
         return baseFolders;
+    }
+
+    public Map<String, Object> findPage(String folderName, int pageNo, int pageSize) {
+        long total = folderManagerRepository.count(folderName);
+        List<EmrBaseFolder> data = total > 0
+            ? folderManagerRepository.findPage(folderName, pageNo, pageSize)
+            : new ArrayList<>();
+        data.forEach(EmrBaseFolder::initIDStr);
+
+        Map<String, Object> page = new HashMap<>();
+        page.put("pageNo", pageNo);
+        page.put("pageSize", pageSize);
+        page.put("totalRecords", total);
+
+        Map<String, Object> res = new HashMap<>();
+        res.put("page", page);
+        res.put("dataList", data);
+        return res;
     }
 
     public boolean editor(List<EmrBaseFolder> folders) {

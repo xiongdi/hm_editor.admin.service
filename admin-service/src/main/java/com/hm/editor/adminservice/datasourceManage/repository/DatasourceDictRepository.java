@@ -55,8 +55,10 @@ public class DatasourceDictRepository {
         //
         //        ).withOptions(newAggregationOptions().allowDiskUse(true).build());
 
-        return mongoTemplate
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> res = (List<Map<String, Object>>) (List<?>) mongoTemplate
             .aggregate(agg, ContantUtil.DS_DICT_COLLECTION_NAME, Map.class)
             .getMappedResults();
+        return res;
     }
 }
