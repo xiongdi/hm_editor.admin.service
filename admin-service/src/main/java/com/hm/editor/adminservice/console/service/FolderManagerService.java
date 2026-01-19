@@ -15,49 +15,51 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FolderManagerService {
-  @Autowired FolderManagerRepository folderManagerRepository;
 
-  public List<EmrBaseFolder> findAll(String folderName) {
-    List<EmrBaseFolder> baseFolders = folderManagerRepository.findAll(folderName);
-    baseFolders.forEach(b -> b.initIDStr());
-    return baseFolders;
-  }
+    @Autowired
+    FolderManagerRepository folderManagerRepository;
 
-  public boolean editor(List<EmrBaseFolder> folders) {
-    return folderManagerRepository.exitor(folders);
-  }
-
-  /** 根据ID查询目录 */
-  public EmrBaseFolder findById(String id) {
-    EmrBaseFolder folder = folderManagerRepository.findById(id);
-    if (folder != null) {
-      folder.initIDStr();
+    public List<EmrBaseFolder> findAll(String folderName) {
+        List<EmrBaseFolder> baseFolders = folderManagerRepository.findAll(folderName);
+        baseFolders.forEach(EmrBaseFolder::initIDStr);
+        return baseFolders;
     }
-    return folder;
-  }
 
-  /** 新增目录 */
-  public boolean create(EmrBaseFolder folder) {
-    if (folder.get_id() == null) {
-      // 新增时生成ID
-      folder.set_id(new ObjectId());
-      folder.setCreateTime(new Date());
+    public boolean editor(List<EmrBaseFolder> folders) {
+        return folderManagerRepository.exitor(folders);
     }
-    folder.initIDStr();
-    return folderManagerRepository.save(folder);
-  }
 
-  /** 更新目录 */
-  public boolean update(EmrBaseFolder folder) {
-    if (folder.getIdStr() != null && !folder.getIdStr().isEmpty()) {
-      folder.set_id(new ObjectId(folder.getIdStr()));
+    /** 根据ID查询目录 */
+    public EmrBaseFolder findById(String id) {
+        EmrBaseFolder folder = folderManagerRepository.findById(id);
+        if (folder != null) {
+            folder.initIDStr();
+        }
+        return folder;
     }
-    folder.initIDStr();
-    return folderManagerRepository.save(folder);
-  }
 
-  /** 根据ID删除目录 */
-  public boolean deleteById(String id) {
-    return folderManagerRepository.deleteById(id);
-  }
+    /** 新增目录 */
+    public boolean create(EmrBaseFolder folder) {
+        if (folder.get_id() == null) {
+            // 新增时生成ID
+            folder.set_id(new ObjectId());
+            folder.setCreateTime(new Date());
+        }
+        folder.initIDStr();
+        return folderManagerRepository.save(folder);
+    }
+
+    /** 更新目录 */
+    public boolean update(EmrBaseFolder folder) {
+        if (folder.getIdStr() != null && !folder.getIdStr().isEmpty()) {
+            folder.set_id(new ObjectId(folder.getIdStr()));
+        }
+        folder.initIDStr();
+        return folderManagerRepository.save(folder);
+    }
+
+    /** 根据ID删除目录 */
+    public boolean deleteById(String id) {
+        return folderManagerRepository.deleteById(id);
+    }
 }

@@ -16,48 +16,52 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/BaseFolders")
 public class BaseFoldersController {
-  @Autowired private BaseFolderService baseFolderService;
 
-  @Operation(summary = "获取所有数据集")
-  @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-  public ApiResult getAll() {
-    List<EmrDataSet> list = null;
-    list = baseFolderService.getAll();
-    return ApiResult.success("查询成功", list);
-  }
+    @Autowired
+    private BaseFolderService baseFolderService;
 
-  @Operation(summary = "获取数据元条件")
-  @RequestMapping(value = "/getCondition", method = RequestMethod.GET)
-  public ApiResult getCondition(@Parameter(description = "数据集ID") @RequestParam String id) {
-    List<EmrDataElementAdmin> list = null;
-    list = baseFolderService.getCondition(id);
-    return ApiResult.success("查询成功", list);
-  }
+    @Operation(summary = "获取所有数据集")
+    @RequestMapping(value = "/getAll", method = RequestMethod.GET)
+    public ApiResult<Object> getAll() {
+        List<EmrDataSet> list = baseFolderService.getAll();
+        return ApiResult.success("查询成功", list);
+    }
 
-  @Operation(summary = "获取数据集详情")
-  @RequestMapping(value = "/getDataSet", method = RequestMethod.POST)
-  public ApiResult getDataSet(@RequestBody Map<String, Object> param) {
-    return ApiResult.success("查询成功", baseFolderService.getDataSet(param));
-  }
+    @Operation(summary = "获取数据元条件")
+    @RequestMapping(value = "/getCondition", method = RequestMethod.GET)
+    public ApiResult<Object> getCondition(
+        @Parameter(description = "数据集ID") @RequestParam String id
+    ) {
+        List<EmrDataElementAdmin> list = baseFolderService.getCondition(id);
+        return ApiResult.success("查询成功", list);
+    }
 
-  //    @RequestMapping("/findBaseFolder")
-  //    public ApiResult findBaseFolder(@RequestBody EmrBaseFolder emrBaseFolder) {
-  //        List<EmrBaseFolder> list = null;
-  //        list = baseFolderService.findBaseFolder(emrBaseFolder);
-  //        return ApiResult.success();
-  //    }
+    @Operation(summary = "获取数据集详情")
+    @RequestMapping(value = "/getDataSet", method = RequestMethod.POST)
+    public ApiResult<Object> getDataSet(@RequestBody Map<String, Object> param) {
+        return ApiResult.success("查询成功", baseFolderService.getDataSet(param));
+    }
 
-  @Operation(summary = "删除数据集")
-  @RequestMapping(value = "/delBaseFolder", method = RequestMethod.DELETE)
-  public ApiResult delBaseFolder(@Parameter(description = "数据集ID") @RequestParam String id) {
-    boolean flag = baseFolderService.delBaseFolder(id);
-    return ApiResult.success();
-  }
+    @Operation(summary = "删除数据集")
+    @RequestMapping(value = "/delBaseFolder", method = RequestMethod.DELETE)
+    public ApiResult<Object> delBaseFolder(
+        @Parameter(description = "数据集ID") @RequestParam String id
+    ) {
+        boolean flag = baseFolderService.delBaseFolder(id);
+        return ApiResult.success();
+    }
 
-  @Operation(summary = "编辑数据集")
-  @RequestMapping(value = "/editBaseFolder", method = RequestMethod.POST)
-  public ApiResult editBaseFolder(@RequestBody Map<String, Object> param) {
-    boolean flag = baseFolderService.editBaseFolder(param);
-    return flag ? ApiResult.success() : ApiResult.failed();
-  }
+    @Operation(summary = "新增数据集")
+    @RequestMapping(value = "/addBaseFolder", method = RequestMethod.POST)
+    public ApiResult<Object> addBaseFolder(@RequestBody Map<String, Object> param) {
+        boolean flag = baseFolderService.addBaseFolder(param);
+        return flag ? ApiResult.success("新增成功") : ApiResult.failed("新增失败");
+    }
+
+    @Operation(summary = "编辑数据集")
+    @RequestMapping(value = "/editBaseFolder", method = RequestMethod.POST)
+    public ApiResult<Object> editBaseFolder(@RequestBody Map<String, Object> param) {
+        boolean flag = baseFolderService.editBaseFolder(param);
+        return flag ? ApiResult.success("编辑成功") : ApiResult.failed("编辑失败");
+    }
 }

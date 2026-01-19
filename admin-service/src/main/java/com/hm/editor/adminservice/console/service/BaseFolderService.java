@@ -11,34 +11,40 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BaseFolderService {
-  @Autowired private BaseFolderRepository baseFolderRepository;
 
-  public List<EmrDataSet> getAll() {
-    return baseFolderRepository.getAll();
-  }
+    @Autowired
+    private BaseFolderRepository baseFolderRepository;
 
-  public List<EmrDataElementAdmin> getCondition(String id) {
-    return baseFolderRepository.getCondition(id);
-  }
+    public List<EmrDataSet> getAll() {
+        return baseFolderRepository.getAll();
+    }
 
-  public Object getDataSet(Map<String, Object> param) {
-    Map<String, Object> res = new HashMap<>();
-    Map<String, Object> page = (Map<String, Object>) param.get("page");
-    Map r = baseFolderRepository.getDataSet(param);
+    public List<EmrDataElementAdmin> getCondition(String id) {
+        return baseFolderRepository.getCondition(id);
+    }
 
-    int totalRecords = r.containsKey("total") ? (int) r.get("total") : 0;
-    page.put("totalRecords", totalRecords);
-    res.put("page", page);
-    res.put("dataList", r.get("data"));
-    return res;
-  }
+    public Object getDataSet(Map<String, Object> param) {
+        Map<String, Object> res = new HashMap<>();
+        Map<String, Object> page = (Map<String, Object>) param.get("page");
+        Map r = baseFolderRepository.getDataSet(param);
 
-  public boolean delBaseFolder(String id) {
-    return baseFolderRepository.delBaseFolder(id);
-  }
+        int totalRecords = r.containsKey("total") ? (int) r.get("total") : 0;
+        page.put("totalRecords", totalRecords);
+        res.put("page", page);
+        res.put("dataList", r.get("data"));
+        return res;
+    }
 
-  public boolean editBaseFolder(Map<String, Object> EmrDataSet) {
-    boolean flag = baseFolderRepository.editBaseFolder(EmrDataSet);
-    return flag;
-  }
+    public boolean delBaseFolder(String id) {
+        return baseFolderRepository.delBaseFolder(id);
+    }
+
+    public boolean addBaseFolder(Map<String, Object> emrDataSet) {
+        return baseFolderRepository.addBaseFolder(emrDataSet);
+    }
+
+    public boolean editBaseFolder(Map<String, Object> EmrDataSet) {
+        boolean flag = baseFolderRepository.editBaseFolder(EmrDataSet);
+        return flag;
+    }
 }

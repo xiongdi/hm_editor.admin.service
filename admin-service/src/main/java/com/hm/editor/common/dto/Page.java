@@ -7,22 +7,22 @@ import lombok.Data;
 @Data
 public class Page implements Serializable {
 
-  private static final long serialVersionUID = -4629775364070595382L;
+    private static final long serialVersionUID = -4629775364070595382L;
 
-  /** 总记录数 */
-  private long totalRecords;
+    /** 总记录数 */
+    private long totalRecords;
 
-  /** 分页大小 */
-  private long pageSize = 10;
+    /** 分页大小 */
+    private long pageSize = 10;
 
-  /** 当前页码 */
-  private long currentPage = 1;
+    /** 当前页码 */
+    private long currentPage = 1;
 
-  Page() {}
+    Page() {}
 
-  public Page(long totalRecords, long pageSize, long currentPage) {
-    this.totalRecords = totalRecords;
-    this.pageSize = pageSize;
-    this.currentPage = currentPage;
-  }
+    public Page(long totalRecords, long pageSize, long currentPage) {
+        this.totalRecords = totalRecords;
+        this.pageSize = pageSize;
+        this.currentPage = currentPage;
+    }
 }

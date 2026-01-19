@@ -1,0 +1,13 @@
+# Prettier 核心配置
+plugins:
+  - prettier-plugin-java
+
+# 代码格式化选项
+printWidth: 100          # 100 字符更适合 Java（方法签名、长类名等）
+tabWidth: 4              # Java 标准缩进（4 空格）
+useTabs: false           # 使用空格而非 Tab，保持一致性
+semi: true               # Java 需要分号
+singleQuote: false      # Java 字符串使用双引号
+trailingComma: "es5"     # 多行数组/枚举等结构末尾逗号（更美观）
+bracketSpacing: true     # 对象/数组括号内空格：{ foo } 而非 {foo}
+endOfLine: "lf"          # Unix 行尾符，跨平台一致

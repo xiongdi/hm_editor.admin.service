@@ -13,47 +13,50 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class DatasourceDictRepository {
-  @Autowired MongoTemplate mongoTemplate;
 
-  public List<Map> getDictVerDataByCode(String code) {
-    return getDictVerDataByCodes(code);
-  }
+    @Autowired
+    MongoTemplate mongoTemplate;
 
-  public List<Map> getDictVerDataByCodes(String... code) {
-    Aggregation agg =
-        newAggregation(
-                match(Criteria.where("code").in(code)),
-                lookup(
-                    ContantUtil.DS_DICT_VARSION_DATA_COLLECTION_NAME,
-                    "code",
-                    "dictVersionUid",
-                    "dictVer"),
-                unwind("dictVer"),
-                project(
-                    "dictVer.val",
-                    "dictVer.calcVal",
-                    "dictVer.remark",
-                    "dictVer.description",
-                    "dictVer.order",
-                    "code"))
-            .withOptions(newAggregationOptions().allowDiskUse(true).build());
-    //        Aggregation agg = newAggregation(
-    //                match(Criteria.where("code").is(code)),
-    //
-    // lookup(ContantUtil.DS_DICT_VERSION_COLLECTION_NAME,"code","dictCode","dictVer"),
-    //                unwind("dictVer"),
-    //                match(Criteria.where("dictVer.publishTime").exists(true)),
-    //                sort(Sort.by(Sort.Direction.DESC,"dictVer.createTime")),
-    //                group("dictVer._id").first("dictVer.uid").as("uid"),
-    //
-    // lookup(ContantUtil.DS_DICT_VARSION_DATA_COLLECTION_NAME,"uid","dictVersionUid","verData"),
-    //
-    // project("verData.val","verData.calcVal","verData.remark","verData.description","verData.order")
-    //
-    //        ).withOptions(newAggregationOptions().allowDiskUse(true).build());
+    public List<Map> getDictVerDataByCode(String code) {
+        return getDictVerDataByCodes(code);
+    }
 
-    return mongoTemplate
-        .aggregate(agg, ContantUtil.DS_DICT_COLLECTION_NAME, Map.class)
-        .getMappedResults();
-  }
+    public List<Map> getDictVerDataByCodes(String... code) {
+        Aggregation agg = newAggregation(
+            match(Criteria.where("code").in(code)),
+            lookup(
+                ContantUtil.DS_DICT_VARSION_DATA_COLLECTION_NAME,
+                "code",
+                "dictVersionUid",
+                "dictVer"
+            ),
+            unwind("dictVer"),
+            project(
+                "dictVer.val",
+                "dictVer.calcVal",
+                "dictVer.remark",
+                "dictVer.description",
+                "dictVer.order",
+                "code"
+            )
+        ).withOptions(newAggregationOptions().allowDiskUse(true).build());
+        //        Aggregation agg = newAggregation(
+        //                match(Criteria.where("code").is(code)),
+        //
+        // lookup(ContantUtil.DS_DICT_VERSION_COLLECTION_NAME,"code","dictCode","dictVer"),
+        //                unwind("dictVer"),
+        //                match(Criteria.where("dictVer.publishTime").exists(true)),
+        //                sort(Sort.by(Sort.Direction.DESC,"dictVer.createTime")),
+        //                group("dictVer._id").first("dictVer.uid").as("uid"),
+        //
+        // lookup(ContantUtil.DS_DICT_VARSION_DATA_COLLECTION_NAME,"uid","dictVersionUid","verData"),
+        //
+        // project("verData.val","verData.calcVal","verData.remark","verData.description","verData.order")
+        //
+        //        ).withOptions(newAggregationOptions().allowDiskUse(true).build());
+
+        return mongoTemplate
+            .aggregate(agg, ContantUtil.DS_DICT_COLLECTION_NAME, Map.class)
+            .getMappedResults();
+    }
 }

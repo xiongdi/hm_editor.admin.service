@@ -22,62 +22,67 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class FolderTemplateController {
 
-  @Autowired FolderTemplateService folderTemplateService;
+    @Autowired
+    FolderTemplateService folderTemplateService;
 
-  @Operation(summary = "获取所有基础模板")
-  @RequestMapping(value = "/baseTemplates", method = RequestMethod.POST)
-  public ApiResult getAll(@RequestBody Map<String, Object> param) {
-    return ApiResult.success(folderTemplateService.getAll(param));
-  }
+    @Operation(summary = "获取所有基础模板")
+    @RequestMapping(value = "/baseTemplates", method = RequestMethod.POST)
+    public ApiResult<Object> getAll(@RequestBody Map<String, Object> param) {
+        return ApiResult.success(folderTemplateService.getAll(param));
+    }
 
-  @Operation(summary = "删除基础模板")
-  @RequestMapping(value = "/delBaseTemplate", method = RequestMethod.POST)
-  public ApiResult del(@RequestBody Map<String, String> id) {
-    boolean flag = folderTemplateService.delBasTemplate(id.get("id"));
-    return flag ? ApiResult.success() : ApiResult.failed();
-  }
+    @Operation(summary = "删除基础模板")
+    @RequestMapping(value = "/delBaseTemplate", method = RequestMethod.POST)
+    public ApiResult<Object> del(@RequestBody Map<String, String> id) {
+        boolean flag = folderTemplateService.delBasTemplate(id.get("id"));
+        return flag ? ApiResult.success() : ApiResult.failed();
+    }
 
-  @Operation(summary = "保存基础模板HTML")
-  @RequestMapping(value = "/saveBaseTemplateHtml", method = RequestMethod.POST)
-  public ApiResult saveBaseTemplateHtml(@RequestBody Map<String, String> templateHtml) {
-    boolean flag =
-        folderTemplateService.saveBaseTemplateHtml(
-            templateHtml.get("id"), templateHtml.get("html"));
-    return flag ? ApiResult.success() : ApiResult.failed();
-  }
+    @Operation(summary = "保存基础模板HTML")
+    @RequestMapping(value = "/saveBaseTemplateHtml", method = RequestMethod.POST)
+    public ApiResult<Object> saveBaseTemplateHtml(@RequestBody Map<String, String> templateHtml) {
+        boolean flag = folderTemplateService.saveBaseTemplateHtml(
+            templateHtml.get("id"),
+            templateHtml.get("html")
+        );
+        return flag ? ApiResult.success() : ApiResult.failed();
+    }
 
-  @Operation(summary = "获取基础模板HTML")
-  @RequestMapping(value = "/getBaseTemplateHtml", method = RequestMethod.POST)
-  public ApiResult getBaseTemplateHtml(@RequestBody Map<String, String> id) {
-    String html = folderTemplateService.getBaseTemplateHtml(id.get("id"));
-    return ApiResult.success(html);
-  }
+    @Operation(summary = "获取基础模板HTML")
+    @RequestMapping(value = "/getBaseTemplateHtml", method = RequestMethod.POST)
+    public ApiResult<Object> getBaseTemplateHtml(@RequestBody Map<String, String> id) {
+        String html = folderTemplateService.getBaseTemplateHtml(id.get("id"));
+        return ApiResult.success(html);
+    }
 
-  @Operation(summary = "编辑基础模板")
-  @RequestMapping(value = "/baseTemplate", method = RequestMethod.POST)
-  public ApiResult edit(@RequestBody EmrBaseTemplate emrBaseFolder, @RequestParam String hosnum) {
-    String msg = folderTemplateService.editorEmrFolder(emrBaseFolder, hosnum);
-    return msg.length() > 0 ? ApiResult.failed(msg) : ApiResult.success();
-  }
+    @Operation(summary = "编辑基础模板")
+    @RequestMapping(value = "/baseTemplate", method = RequestMethod.POST)
+    public ApiResult<Object> edit(
+        @RequestBody EmrBaseTemplate emrBaseFolder,
+        @RequestParam String hosnum
+    ) {
+        String msg = folderTemplateService.editorEmrFolder(emrBaseFolder, hosnum);
+        return !msg.isEmpty() ? ApiResult.failed(msg) : ApiResult.success();
+    }
 
-  @Operation(summary = "获取基础模板列表")
-  @RequestMapping(value = "/getBasTemplates", method = RequestMethod.POST)
-  public ApiResult getBasTemplates(@RequestBody EmrBaseFolder folder) {
-    folder.set_id(new ObjectId(folder.getIdStr()));
-    return folderTemplateService.getBasTemplateList(folder);
-  }
+    @Operation(summary = "获取基础模板列表")
+    @RequestMapping(value = "/getBasTemplates", method = RequestMethod.POST)
+    public ApiResult<Object> getBasTemplates(@RequestBody EmrBaseFolder folder) {
+        folder.set_id(new ObjectId(folder.getIdStr()));
+        return folderTemplateService.getBasTemplateList(folder);
+    }
 
-  // 目录-模板对应关系
-  @Operation(summary = "目录-模板对应关系")
-  @RequestMapping(value = "/mapDirTemplate", method = RequestMethod.POST)
-  public ApiResult mapDirTemplate() {
-    return folderTemplateService.mapDirTemplate();
-  }
+    // 目录-模板对应关系
+    @Operation(summary = "目录-模板对应关系")
+    @RequestMapping(value = "/mapDirTemplate", method = RequestMethod.POST)
+    public ApiResult<Object> mapDirTemplate() {
+        return folderTemplateService.mapDirTemplate();
+    }
 
-  // 数据集对应所有数据元
-  @Operation(summary = "模板数据集")
-  @RequestMapping(value = "/templateDs", method = RequestMethod.GET)
-  public ApiResult templateDs(@RequestParam String name) {
-    return ApiResult.success(folderTemplateService.templateDs(name));
-  }
+    // 数据集对应所有数据元
+    @Operation(summary = "模板数据集")
+    @RequestMapping(value = "/templateDs", method = RequestMethod.GET)
+    public ApiResult<Object> templateDs(@RequestParam String name) {
+        return ApiResult.success(folderTemplateService.templateDs(name));
+    }
 }

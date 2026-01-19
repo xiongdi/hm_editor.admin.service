@@ -21,57 +21,53 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class FolderManagerController {
 
-  @Autowired FolderManagerService folderManagerService;
+    @Autowired
+    FolderManagerService folderManagerService;
 
-  @Operation(summary = "服务健康检查")
-  @RequestMapping(value = "/", method = RequestMethod.GET)
-  public ApiResult root() {
-    return ApiResult.success(
-        "HmEditor Admin Service is running. Please visit /doc.html for API documentation.");
-  }
-
-  @Operation(summary = "获取基础目录")
-  @RequestMapping(value = "/baseFolders", method = RequestMethod.GET)
-  public ApiResult getAll(@RequestParam("folderName") String folderName) {
-    return ApiResult.success(folderManagerService.findAll(folderName));
-  }
-
-  @Operation(summary = "移动目录")
-  @RequestMapping(value = "/moveFolder", method = RequestMethod.POST)
-  public ApiResult moveFolder(@RequestBody List<EmrBaseFolder> param) {
-    return ApiResult.success(folderManagerService.editor(param));
-  }
-
-  @Operation(summary = "根据ID查询目录")
-  @RequestMapping(value = "/getFolderById", method = RequestMethod.GET)
-  public ApiResult getFolderById(@Parameter(description = "目录ID") @RequestParam String id) {
-    EmrBaseFolder folder = folderManagerService.findById(id);
-    if (folder != null) {
-      return ApiResult.success("查询成功", folder);
-    } else {
-      return ApiResult.failed("目录不存在");
+    @Operation(summary = "获取基础目录")
+    @RequestMapping(value = "/baseFolders", method = RequestMethod.GET)
+    public ApiResult<Object> getAll(@RequestParam("folderName") String folderName) {
+        return ApiResult.success(folderManagerService.findAll(folderName));
     }
-  }
 
-  @Operation(summary = "新增目录")
-  @RequestMapping(value = "/addFolder", method = RequestMethod.POST)
-  public ApiResult addFolder(@RequestBody EmrBaseFolder folder) {
-    boolean flag = folderManagerService.create(folder);
-    return flag ? ApiResult.success("新增成功") : ApiResult.failed("新增失败");
-  }
+    @Operation(summary = "移动目录")
+    @RequestMapping(value = "/moveFolder", method = RequestMethod.POST)
+    public ApiResult<Object> moveFolder(@RequestBody List<EmrBaseFolder> param) {
+        return ApiResult.success(folderManagerService.editor(param));
+    }
 
-  @Operation(summary = "更新目录")
-  @RequestMapping(value = "/updateFolder", method = RequestMethod.POST)
-  public ApiResult updateFolder(@RequestBody EmrBaseFolder folder) {
-    boolean flag = folderManagerService.update(folder);
-    return flag ? ApiResult.success("更新成功") : ApiResult.failed("更新失败");
-  }
+    @Operation(summary = "根据ID查询目录")
+    @RequestMapping(value = "/getFolderById", method = RequestMethod.GET)
+    public ApiResult<Object> getFolderById(
+        @Parameter(description = "目录ID") @RequestParam String id
+    ) {
+        EmrBaseFolder folder = folderManagerService.findById(id);
+        if (folder != null) {
+            return ApiResult.success("查询成功", folder);
+        } else {
+            return ApiResult.failed("目录不存在");
+        }
+    }
 
-  @Operation(summary = "删除目录")
-  @RequestMapping(value = "/deleteFolder", method = RequestMethod.POST)
-  public ApiResult deleteFolder(@RequestBody Map<String, String> param) {
-    String id = param.get("id");
-    boolean flag = folderManagerService.deleteById(id);
-    return flag ? ApiResult.success("删除成功") : ApiResult.failed("删除失败");
-  }
+    @Operation(summary = "新增目录")
+    @RequestMapping(value = "/addFolder", method = RequestMethod.POST)
+    public ApiResult<Object> addFolder(@RequestBody EmrBaseFolder folder) {
+        boolean flag = folderManagerService.create(folder);
+        return flag ? ApiResult.success("新增成功") : ApiResult.failed("新增失败");
+    }
+
+    @Operation(summary = "更新目录")
+    @RequestMapping(value = "/updateFolder", method = RequestMethod.POST)
+    public ApiResult<Object> updateFolder(@RequestBody EmrBaseFolder folder) {
+        boolean flag = folderManagerService.update(folder);
+        return flag ? ApiResult.success("更新成功") : ApiResult.failed("更新失败");
+    }
+
+    @Operation(summary = "删除目录")
+    @RequestMapping(value = "/deleteFolder", method = RequestMethod.POST)
+    public ApiResult<Object> deleteFolder(@RequestBody Map<String, String> param) {
+        String id = param.get("id");
+        boolean flag = folderManagerService.deleteById(id);
+        return flag ? ApiResult.success("删除成功") : ApiResult.failed("删除失败");
+    }
 }

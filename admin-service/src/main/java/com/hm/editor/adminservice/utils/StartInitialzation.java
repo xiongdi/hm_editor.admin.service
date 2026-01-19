@@ -8,12 +8,13 @@ import org.springframework.boot.CommandLineRunner;
  * @desc:项目启动后初始化部分数据
  */
 public abstract class StartInitialzation implements CommandLineRunner {
-  protected Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-  @Override
-  public void run(String... args) throws Exception {
-    init();
-  }
+    protected Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-  public abstract void init();
+    @Override
+    public void run(String... args) throws Exception {
+        init();
+    }
+
+    public abstract void init();
 }
