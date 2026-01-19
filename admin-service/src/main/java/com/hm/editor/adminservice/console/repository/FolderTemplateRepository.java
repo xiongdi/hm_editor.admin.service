@@ -113,7 +113,7 @@ public class FolderTemplateRepository {
         return getListByCri(Criteria.where("folderId").is(id));
     }
 
-    public List<Map> allTemplate() {
+    public List<Map<String, Object>> allTemplate() {
         Aggregation agg = newAggregation(
             lookup("emrBaseFolder", "folderId", "_id", "folder"),
             unwind("folder"),

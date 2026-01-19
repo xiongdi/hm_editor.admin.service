@@ -3,6 +3,7 @@ package com.hm.editor.adminservice.utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 /** Created by taota on 2017/8/22. */
@@ -14,7 +15,7 @@ public class SpringContextHelper implements ApplicationContextAware {
 
     /** 实现ApplicationContextAware接口的context注入函数, 将其存入静态变量. */
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
+    public void setApplicationContext(@NonNull ApplicationContext applicationContext) {
         SpringContextHelper.applicationContext = applicationContext; // NOSONAR
     }
 
@@ -32,10 +33,9 @@ public class SpringContextHelper implements ApplicationContextAware {
     }
 
     /** 从静态变量ApplicationContext中取得Bean, 自动转型为所赋值对象的类型. */
-    @SuppressWarnings("unchecked")
     public static <T> T getBean(Class<T> clazz) {
         checkApplicationContext();
-        return (T) applicationContext.getBean(clazz);
+        return applicationContext.getBean(clazz);
     }
 
     /** 清除applicationContext静态变量. */

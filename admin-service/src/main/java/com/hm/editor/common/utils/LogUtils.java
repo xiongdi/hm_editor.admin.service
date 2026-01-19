@@ -21,7 +21,7 @@ public class LogUtils {
         return LoggerFactory.getLogger(name);
     }
 
-    public static Logger of(Class cls) {
+    public static Logger of(Class<?> cls) {
         return LoggerFactory.getLogger(cls);
     }
 

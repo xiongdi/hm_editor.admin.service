@@ -19,7 +19,7 @@ public class DatasourceSetRepository {
     @Autowired
     MongoTemplate mongoTemplate;
 
-    public List<Map> getVerData(String dictVerId) {
+    public List<Map<String, Object>> getVerData(String dictVerId) {
         Fields fields = Fields.from(
             Fields.field("_id"),
             Fields.field("type"),
@@ -41,7 +41,7 @@ public class DatasourceSetRepository {
             .getMappedResults();
     }
 
-    public List<Map> getDsSetVerData(List<String> setCode) {
+    public List<Map<String, Object>> getDsSetVerData(List<String> setCode) {
         return mongoTemplate.find(
             Query.query(Criteria.where("code").in(setCode).and("type").is("数据集")),
             Map.class,

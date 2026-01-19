@@ -75,8 +75,8 @@ public class DatasourceDictService {
         return commonService.delData(DataUtil.str2ObjectId(id), dsDictColName);
     }
 
-    public Map getDict(String text, int pageNo, int pageSize) {
-        Map d = commonService.pageData(
+    public Map<String, Object> getDict(String text, int pageNo, int pageSize) {
+        Map<String, Object> d = commonService.pageData(
             dsDictColName,
             text,
             pageNo,
@@ -85,22 +85,23 @@ public class DatasourceDictService {
             "code",
             "name"
         );
-        List<Map> data = (List) d.get("data");
-        final Map codeCount;
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> data = (List<Map<String, Object>>) d.get("data");
+        final Map<String, Object> codeCount;
         if (!data.isEmpty()) {
             List<String> codes = data
                 .stream()
                 .map(_d -> _d.get("code").toString())
                 .collect(Collectors.toList());
 
-            List<Map> ref = commonService.refCount("数据元", codes);
+            List<Map<String, Object>> ref = commonService.refCount("数据元", codes);
             codeCount = ref
                 .stream()
                 .collect(
-                    Collectors.toMap(_d -> _d.get("_id"), _d -> _d.get("count"), (k1, k2) -> k1)
+                    Collectors.toMap(_d -> _d.get("_id").toString(), _d -> _d.get("count"), (k1, k2) -> k1)
                 );
         } else {
-            codeCount = new HashMap();
+            codeCount = new HashMap<>();
         }
 
         data.forEach(_d -> {
@@ -115,14 +116,14 @@ public class DatasourceDictService {
         return d;
     }
 
-    public List<Map> allDict() {
-        List<Map> d = commonRepository.find(dsDictColName, new Criteria(), Sort.by("code"));
+    public List<Map<String, Object>> allDict() {
+        List<Map<String, Object>> d = commonRepository.find(dsDictColName, new Criteria(), Sort.by("code"));
         DataUtil.objectId2Str(d);
         return d;
     }
 
-    public List<Map> allUsedDict() {
-        List<Map> d = commonRepository.find(
+    public List<Map<String, Object>> allUsedDict() {
+        List<Map<String, Object>> d = commonRepository.find(
             dsDictColName,
             Criteria.where("status").is(true),
             Sort.by("code")
@@ -131,8 +132,8 @@ public class DatasourceDictService {
         return d;
     }
 
-    public List<Map> getDictVerData(String dictVerId) {
-        List<Map> d = commonRepository.find(
+    public List<Map<String, Object>> getDictVerData(String dictVerId) {
+        List<Map<String, Object>> d = commonRepository.find(
             dsDictVerDataColName,
             Criteria.where("dictVersionUid").is(dictVerId),
             Sort.by("order")
@@ -141,7 +142,7 @@ public class DatasourceDictService {
         return d;
     }
 
-    public List<Map> editorDsDictVerData(Map<String, Object> d, String dictVerId) {
+    public List<Map<String, Object>> editorDsDictVerData(Map<String, Object> d, String dictVerId) {
         d.put("dictVersionUid", dictVerId);
         commonRepository.save(d, dsDictVerDataColName, d.keySet().toArray(new String[d.size()]));
         return getDictVerData(dictVerId);
@@ -151,11 +152,11 @@ public class DatasourceDictService {
         return commonService.delData(DataUtil.str2ObjectId(id), dsDictVerDataColName);
     }
 
-    public List<Map> getDsDictVerDataByCode(String code) {
+    public List<Map<String, Object>> getDsDictVerDataByCode(String code) {
         return datasourceDictRepository.getDictVerDataByCode(code);
     }
 
-    public List<Map> refData(String code) {
+    public List<Map<String, Object>> refData(String code) {
         String type = "数据元";
         return commonService.refList(type, code);
     }

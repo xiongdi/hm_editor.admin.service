@@ -90,8 +90,8 @@ public class FolderTemplateService {
         Map<String, Object> temMap = new HashMap<>();
         Map<String, Set<String>> _f = new HashMap<>();
         Map<String, Map<String, String>> _t = new HashMap<>();
-        List<Map> templates = folderTemplateRepository.allTemplate();
-        for (Map m : templates) {
+        List<Map<String, Object>> templates = folderTemplateRepository.allTemplate();
+        for (Map<String, Object> m : templates) {
             String folderName = m.get("name").toString();
             String templateName = m.get("templateName").toString();
             String inpType = m.get("type").toString();
@@ -124,7 +124,7 @@ public class FolderTemplateService {
         return folderTemplateRepository.getBaseTemplateHtml(id);
     }
 
-    public List<Map> templateDs(String name) {
+    public List<Map<String, Object>> templateDs(String name) {
         List<EmrBaseTemplate> templates = folderTemplateRepository.getListByCri(
             Criteria.where("templateName").is(name)
         );

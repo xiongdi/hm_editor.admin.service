@@ -190,7 +190,7 @@ public class FileUtil {
         return txtToString(file);
     }
 
-    public static String jarTxtToString(Class receiverCls, String filePath) {
+    public static String jarTxtToString(Class<?> receiverCls, String filePath) {
         InputStream ips = receiverCls.getResourceAsStream(filePath);
         StringBuilder result = new StringBuilder();
         try {
@@ -366,7 +366,7 @@ public class FileUtil {
                 List<Object> rowData = _data.get(index++);
                 int len = rowData.size();
                 int cellIndex = 0;
-                Map tempData = new HashMap();
+                Map<String, Object> tempData = new HashMap<>();
                 for (Object h : excelHead) {
                     if (cellIndex >= len) {
                         break;
@@ -463,7 +463,7 @@ public class FileUtil {
         return data;
     }
 
-    public static String absoluteTxtToString(Class receiverCls, String filePath) {
+    public static String absoluteTxtToString(Class<?> receiverCls, String filePath) {
         StringBuilder result = new StringBuilder();
         try (
             InputStream ips = new FileInputStream(filePath);

@@ -22,7 +22,7 @@ public class ClassUtils {
      * @param c
      * @return
      */
-    public static String[] fieldArr(Class c, String... filterNames) {
+    public static String[] fieldArr(Class<?> c, String... filterNames) {
         if (c == null) {
             return null;
         }
@@ -44,7 +44,7 @@ public class ClassUtils {
         return Arrays.copyOf(res, count);
     }
 
-    public static List<String> fieldList(Class c, String... filterNames) {
+    public static List<String> fieldList(Class<?> c, String... filterNames) {
         String[] fields = fieldArr(c, filterNames);
         if (fields == null) return new ArrayList<>();
         return new ArrayList<>(Arrays.asList(fields));

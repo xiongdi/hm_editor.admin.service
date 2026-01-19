@@ -32,7 +32,7 @@ public class CommonRepository {
         return mongoTemplate.count(Query.query(cri), colName);
     }
 
-    public List<Map> find(String colName, Criteria cri, Sort sort) {
+    public List<Map<String, Object>> find(String colName, Criteria cri, Sort sort) {
         Query q = Query.query(cri);
         if (sort != null) {
             q.with(sort);
@@ -40,13 +40,13 @@ public class CommonRepository {
         return mongoTemplate.find(q, Map.class, colName);
     }
 
-    public Map findOne(String colName, Criteria cri) {
+    public Map<String, Object> findOne(String colName, Criteria cri) {
         Query q = Query.query(cri);
 
         return mongoTemplate.findOne(q, Map.class, colName);
     }
 
-    public List<Map> pageData(String colName, Criteria cri, Sort sort, int pageNo, int pageSize) {
+    public List<Map<String, Object>> pageData(String colName, Criteria cri, Sort sort, int pageNo, int pageSize) {
         Aggregation agg = Aggregation.newAggregation(
             Aggregation.match(cri),
             Aggregation.sort(sort),
@@ -56,11 +56,11 @@ public class CommonRepository {
         return mongoTemplate.aggregate(agg, colName, Map.class).getMappedResults();
     }
 
-    public void insert(Map d, String colName) {
+    public void insert(Map<String, Object> d, String colName) {
         mongoTemplate.insert(d, colName);
     }
 
-    public void inserts(List<Map> d, String colName) {
+    public void inserts(List<Map<String, Object>> d, String colName) {
         BulkOperations bulkOperations = mongoTemplate.bulkOps(
             BulkOperations.BulkMode.UNORDERED,
             colName
@@ -90,7 +90,7 @@ public class CommonRepository {
         return true;
     }
 
-    public void save(Map d, String colName, String... updateKeys) {
+    public void save(Map<String, Object> d, String colName, String... updateKeys) {
         ObjectId id = null;
         if (d.containsKey("_id") && d.get("_id") != null) {
             if (d.get("_id") instanceof ObjectId) {
@@ -100,7 +100,7 @@ public class CommonRepository {
             }
         }
         if (id == null) {
-            Map i = new HashMap();
+            Map<String, Object> i = new HashMap<>();
             for (String k : updateKeys) {
                 Object v = d.get(k);
                 if (v != null) {
@@ -123,7 +123,7 @@ public class CommonRepository {
         }
     }
 
-    public List<Map> agg(List<AggregationOperation> aggs, String name) {
+    public List<Map<String, Object>> agg(List<AggregationOperation> aggs, String name) {
         Aggregation _agg = newAggregation(aggs).withOptions(
             newAggregationOptions().allowDiskUse(true).build()
         );
@@ -137,8 +137,8 @@ public class CommonRepository {
             limit(1)
         ).withOptions(newAggregationOptions().allowDiskUse(true).build());
 
-        List<Map> r = mongoTemplate.aggregate(agg, name, Map.class).getMappedResults();
-        Map m;
+        List<Map<String, Object>> r = mongoTemplate.aggregate(agg, name, Map.class).getMappedResults();
+        Map<String, Object> m;
         if (r.isEmpty() || (m = r.get(0)) == null) {
             return null;
         }

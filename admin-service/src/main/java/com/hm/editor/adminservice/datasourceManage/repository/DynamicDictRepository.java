@@ -22,7 +22,7 @@ public class DynamicDictRepository {
      * @param code 编码
      * @return 动态值域
      */
-    public List<Map> findByCode(String code) {
+    public List<Map<String, Object>> findByCode(String code) {
         Criteria criteria = Criteria.where("code").is(code);
         // 添加未删除条件（isDeleted为0或不存在）
         criteria.andOperator(
@@ -33,6 +33,13 @@ public class DynamicDictRepository {
         );
 
         Query query = new Query(criteria);
-        return mongoTemplate.find(query, Map.class, ContantUtil.DYNAMIC_DICT_COLLECTION_NAME);
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> result =
+            (List<Map<String, Object>>) (List<?>) mongoTemplate.find(
+                query,
+                Map.class,
+                ContantUtil.DYNAMIC_DICT_COLLECTION_NAME
+            );
+        return result;
     }
 }

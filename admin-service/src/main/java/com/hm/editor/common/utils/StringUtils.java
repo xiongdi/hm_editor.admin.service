@@ -113,8 +113,8 @@ public class StringUtils {
         return (
             obj == null ||
             obj.toString().trim().isEmpty() ||
-            (obj instanceof Map && ((Map) obj).isEmpty()) ||
-            (obj instanceof Collection && ((Collection) obj).isEmpty())
+            (obj instanceof Map && ((Map<?, ?>) obj).isEmpty()) ||
+            (obj instanceof Collection && ((Collection<?>) obj).isEmpty())
         );
     }
 

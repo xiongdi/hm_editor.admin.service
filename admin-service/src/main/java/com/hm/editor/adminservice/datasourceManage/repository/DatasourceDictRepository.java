@@ -17,11 +17,11 @@ public class DatasourceDictRepository {
     @Autowired
     MongoTemplate mongoTemplate;
 
-    public List<Map> getDictVerDataByCode(String code) {
+    public List<Map<String, Object>> getDictVerDataByCode(String code) {
         return getDictVerDataByCodes(code);
     }
 
-    public List<Map> getDictVerDataByCodes(String... code) {
+    public List<Map<String, Object>> getDictVerDataByCodes(String... code) {
         Aggregation agg = newAggregation(
             match(Criteria.where("code").in(code)),
             lookup(

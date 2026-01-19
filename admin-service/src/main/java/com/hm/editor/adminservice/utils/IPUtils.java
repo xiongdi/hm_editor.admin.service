@@ -7,12 +7,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class IPUtils {
 
-    private static final IPUtils instance = new IPUtils();
-
-    private IPUtils() {}
-
-    public static IPUtils getInstance() {
-        return instance;
+    private IPUtils() {
+        // Utility class - prevent instantiation
     }
 
     /***

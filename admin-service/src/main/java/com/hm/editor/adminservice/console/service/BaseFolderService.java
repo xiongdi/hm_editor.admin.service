@@ -26,7 +26,7 @@ public class BaseFolderService {
     public Object getDataSet(Map<String, Object> param) {
         Map<String, Object> res = new HashMap<>();
         Map<String, Object> page = (Map<String, Object>) param.get("page");
-        Map r = baseFolderRepository.getDataSet(param);
+        Map<String, Object> r = baseFolderRepository.getDataSet(param);
 
         int totalRecords = r.containsKey("total") ? (int) r.get("total") : 0;
         page.put("totalRecords", totalRecords);

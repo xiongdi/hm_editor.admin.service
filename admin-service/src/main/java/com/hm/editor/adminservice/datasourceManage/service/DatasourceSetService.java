@@ -36,14 +36,14 @@ public class DatasourceSetService {
     DatasourceDictRepository datasourceDictRepository;
 
     // 数据集新增
-    public Map addData(Map<String, Object> data) {
+    public Map<String, Object> addData(Map<String, Object> data) {
         // 确保不包含_id，明确表示这是新增操作
         data.remove("_id");
         return editorData(data);
     }
 
     // 值域新增、编辑
-    public Map editorData(Map<String, Object> data) {
+    public Map<String, Object> editorData(Map<String, Object> data) {
         String idKey = "_id";
         boolean addFlag = !data.containsKey(idKey);
         if (!addFlag) {
@@ -57,16 +57,16 @@ public class DatasourceSetService {
             "name",
             "versionUid"
         );
-        Map res = new HashMap();
+        Map<String, Object> res = new HashMap<>();
         res.put("editFlag", flag);
         if (flag && addFlag) {
-            List<Map> all = commonRepository.find(
+            List<Map<String, Object>> all = commonRepository.find(
                 colName,
                 new Criteria(),
                 Sort.by(Sort.Direction.ASC, "code")
             );
             int addIndex = 0;
-            for (Map m : all) {
+            for (Map<String, Object> m : all) {
                 if (data.get("code").equals(m.get("code"))) {
                     res.put("index", addIndex);
                     DataUtil.objectId2StrByKey(m, "_id");
@@ -80,11 +80,11 @@ public class DatasourceSetService {
 
     public boolean delData(String id) {
         commonService.canDel(id, "数据集");
-        Map s = commonRepository.findOne(
+        Map<String, Object> s = commonRepository.findOne(
             colName,
             Criteria.where("_id").is(DataUtil.str2ObjectId(id))
         );
-        List<Map> d = commonRepository.find(
+        List<Map<String, Object>> d = commonRepository.find(
             "emrBaseTemplate",
             Criteria.where("dsSet").is(s.get("code")),
             null
@@ -104,15 +104,16 @@ public class DatasourceSetService {
         return true;
     }
 
-    public Map getData(String text, int pageNo, int pageSize) {
-        Map d = commonService.pageData(colName, text, pageNo, pageSize, "code", "code", "name");
-        List<Map> data = (List) d.get("data");
+    public Map<String, Object> getData(String text, int pageNo, int pageSize) {
+        Map<String, Object> d = commonService.pageData(colName, text, pageNo, pageSize, "code", "code", "name");
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> data = (List<Map<String, Object>>) d.get("data");
         Set<String> codes = data
             .stream()
             .filter(_d -> _d.get("code") != null && !_d.get("code").toString().isEmpty())
             .map(_d -> _d.get("code").toString())
             .collect(Collectors.toSet());
-        Map<String, List<Map>> codeRef = refData(codes);
+        Map<String, List<Map<String, Object>>> codeRef = refData(codes);
 
         data.forEach(_d -> {
             DataUtil.objectId2Str(_d);
@@ -126,16 +127,16 @@ public class DatasourceSetService {
     }
 
     //
-    public Map getVerData(String dictVerId) {
-        Map res = new HashMap();
-        List<Map> d = datasourceSetRepository.getVerData(dictVerId);
+    public Map<String, Object> getVerData(String dictVerId) {
+        Map<String, Object> res = new HashMap<>();
+        List<Map<String, Object>> d = datasourceSetRepository.getVerData(dictVerId);
         d = d
             .stream()
             .filter(_d -> _d.containsKey("gp") || _d.containsKey("ds"))
             .collect(Collectors.toList());
         // DataUtil.objectId2Str(d,"_id");
         List<String> gcode = new ArrayList<>();
-        for (Map dd : d) {
+        for (Map<String, Object> dd : d) {
             DataUtil.objectId2Str(dd);
             Object l = dd.get("ds");
             if (l != null && l instanceof Map && !((Map<?, ?>) l).isEmpty()) {
@@ -147,8 +148,8 @@ public class DatasourceSetService {
         return res;
     }
 
-    public Map editorVerData(Map<String, Object> d, String dictVerId) {
-        Map<String, Object> d1 = new HashMap();
+    public Map<String, Object> editorVerData(Map<String, Object> d, String dictVerId) {
+        Map<String, Object> d1 = new HashMap<>();
         d1.put("_id", d.get("_id"));
         d1.put("type", "数据集");
         d1.put("code", dictVerId);
@@ -170,15 +171,15 @@ public class DatasourceSetService {
         );
     }
 
-    public List<Map> allPublishedDsSet() {
-        List<Map> data = commonRepository.find(colName, new Criteria(), null);
+    public List<Map<String, Object>> allPublishedDsSet() {
+        List<Map<String, Object>> data = commonRepository.find(colName, new Criteria(), null);
 
         DataUtil.objectId2Str(data);
         return data;
     }
 
-    public List<Map> allDsList(List<String> setCode) {
-        List<Map> l = datasourceSetRepository.getDsSetVerData(setCode);
+    public List<Map<String, Object>> allDsList(List<String> setCode) {
+        List<Map<String, Object>> l = datasourceSetRepository.getDsSetVerData(setCode);
 
         Set<String> dsCode = l
             .stream()
@@ -193,7 +194,7 @@ public class DatasourceSetService {
         if (allDsCode.isEmpty()) {
             return new ArrayList<>();
         }
-        List<Map> _ds = commonRepository.find(
+        List<Map<String, Object>> _ds = commonRepository.find(
             ContantUtil.DS_COLLECTION_NAME,
             Criteria.where("code").in(allDsCode),
             null
@@ -204,10 +205,10 @@ public class DatasourceSetService {
             .map(d -> d.get("dictCode").toString())
             .collect(Collectors.toSet());
         if (!dictCode.isEmpty()) {
-            List<Map> dicts = datasourceDictRepository.getDictVerDataByCodes(
+            List<Map<String, Object>> dicts = datasourceDictRepository.getDictVerDataByCodes(
                 dictCode.toArray(new String[dictCode.size()])
             );
-            Map<String, List<Map>> dg = dicts
+            Map<String, List<Map<String, Object>>> dg = dicts
                 .stream()
                 .collect(Collectors.groupingBy(d -> d.get("code").toString()));
 
@@ -220,8 +221,8 @@ public class DatasourceSetService {
         return _ds;
     }
 
-    public List<Map> refData(String code) {
-        List<Map> d = commonRepository.find(
+    public List<Map<String, Object>> refData(String code) {
+        List<Map<String, Object>> d = commonRepository.find(
             "emrBaseTemplate",
             Criteria.where("dsSet").is(code),
             null
@@ -231,8 +232,8 @@ public class DatasourceSetService {
         return d;
     }
 
-    public Map<String, List<Map>> refData(Set<String> code) {
-        Map<String, List<Map>> groupByCode = new HashMap<>();
+    public Map<String, List<Map<String, Object>>> refData(Set<String> code) {
+        Map<String, List<Map<String, Object>>> groupByCode = new HashMap<>();
         if (code == null || code.isEmpty()) {
             return groupByCode;
         }
@@ -243,20 +244,21 @@ public class DatasourceSetService {
                 .map(c -> Criteria.where("dsCode").is(c))
                 .collect(Collectors.toSet())
         );
-        List<Map> d = commonRepository.find(
+        List<Map<String, Object>> d = commonRepository.find(
             "emrBaseTemplate",
             Criteria.where("dsSet").in(code),
             null
         );
         d.forEach(_d -> _d.put("name", _d.get("templateName")));
 
-        for (Map dd : d) {
+        for (Map<String, Object> dd : d) {
             Object dsSet = dd.get("dsSet");
             if (dsSet != null && dsSet instanceof Collection) {
-                Collection<String> _dses = (Collection) dsSet;
+                @SuppressWarnings("unchecked")
+                Collection<String> _dses = (Collection<String>) dsSet;
                 Set<String> dses = new HashSet<>(_dses);
                 for (String ds : dses) {
-                    List<Map> dsL = groupByCode.getOrDefault(ds, new ArrayList<>());
+                    List<Map<String, Object>> dsL = groupByCode.getOrDefault(ds, new ArrayList<>());
                     dsL.add(dd);
                     groupByCode.put(ds, dsL);
                 }

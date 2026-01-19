@@ -63,7 +63,7 @@ public class DatasourceService {
 
     public boolean delDs(String id) {
         commonService.canDel(id, "数据元");
-        Map d = commonRepository.findOne(
+        Map<String, Object> d = commonRepository.findOne(
             datasourceColName,
             Criteria.where("_id").is(DataUtil.str2ObjectId(id))
         );
@@ -81,8 +81,8 @@ public class DatasourceService {
         return true;
     }
 
-    public Map getDs(String text, int pageNo, int pageSize) {
-        Map d = commonService.pageData(
+    public Map<String, Object> getDs(String text, int pageNo, int pageSize) {
+        Map<String, Object> d = commonService.pageData(
             datasourceColName,
             text,
             pageNo,
@@ -91,18 +91,19 @@ public class DatasourceService {
             "code",
             "name"
         );
-        List<Map> data = (List) d.get("data");
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> data = (List<Map<String, Object>>) d.get("data");
         data.forEach(DataUtil::objectId2Str);
 
         return d;
     }
 
-    public List<Map> getAllDs() {
+    public List<Map<String, Object>> getAllDs() {
         return commonRepository.find(datasourceColName, new Criteria(), Sort.by("code"));
     }
 
-    public List<Map> refData(String code) {
-        List<Map> d1 = commonService.refList("数据集", code);
+    public List<Map<String, Object>> refData(String code) {
+        List<Map<String, Object>> d1 = commonService.refList("数据集", code);
         d1.forEach(d -> d.put("type", "数据集"));
 
         return d1;

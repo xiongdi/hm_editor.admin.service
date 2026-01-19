@@ -58,13 +58,13 @@ public class JsonUtil {
         return parseArray(txt, cls);
     }
 
-    public static <T> T parseObjectFromJarFile(Class receiverCls, String filePath, Class<T> cls) {
+    public static <T> T parseObjectFromJarFile(Class<?> receiverCls, String filePath, Class<T> cls) {
         String txt = FileUtil.jarTxtToString(receiverCls, filePath);
         return parseObject(txt, cls);
     }
 
     public static <T> T parseObjectFromAbsoluteFile(
-        Class receiverCls,
+        Class<?> receiverCls,
         String filePath,
         Class<T> cls
     ) {

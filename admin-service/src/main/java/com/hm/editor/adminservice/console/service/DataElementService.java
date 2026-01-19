@@ -11,14 +11,16 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-@Slf4j
 public class DataElementService {
+
+    private static final Logger log = LoggerFactory.getLogger(DataElementService.class);
 
     @Autowired
     private DataElementRepository dataElementRepository;
@@ -43,7 +45,7 @@ public class DataElementService {
         String description = String.valueOf(param.get("description"));
         Map<String, String> dataSourceType = (Map<String, String>) param.get("dataSourceType");
         String name = dataSourceType.get("name");
-        List<Map> list = dataElementRepository.searchDataElement(
+        List<Map<String, Object>> list = dataElementRepository.searchDataElement(
             dataSourceName,
             param.get("templateName") + ""
         );
@@ -68,7 +70,7 @@ public class DataElementService {
         String description = String.valueOf(param.get("description"));
         Map<String, String> dataSourceType = (Map<String, String>) param.get("dataSourceType");
         String dataSourceTypeCode = dataSourceType.get("code");
-        List<Map> list = dataElementRepository.searchDataElement(
+        List<Map<String, Object>> list = dataElementRepository.searchDataElement(
             dataSourceName,
             param.get("templateName") + ""
         );

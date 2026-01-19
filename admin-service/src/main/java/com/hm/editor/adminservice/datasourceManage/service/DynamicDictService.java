@@ -86,7 +86,7 @@ public class DynamicDictService {
     }
 
     // 获取动态值域列表（分页）
-    public Map getDynamicDict(String text, int pageNo, int pageSize) {
+    public Map<String, Object> getDynamicDict(String text, int pageNo, int pageSize) {
         // 创建 Criteria 对象，用于构建查询条件
         Criteria criteria = new Criteria();
 
@@ -107,8 +107,14 @@ public class DynamicDictService {
         criteria.andOperator(searchCriteria);
 
         // 调用 commonService.pageData 方法，并传入构建好的查询条件
-        Map d = commonService.pageData(dynamicDictColName, criteria, pageNo, pageSize, "code");
-        List<Map> data = (List) d.get("data");
+        Map<String, Object> d = commonService.pageData(
+            dynamicDictColName,
+            criteria,
+            pageNo,
+            pageSize,
+            "code"
+        );
+        List<Map<String, Object>> data = (List<Map<String, Object>>) d.get("data");
 
         data.forEach(DataUtil::objectId2Str);
 
@@ -116,20 +122,25 @@ public class DynamicDictService {
     }
 
     // 获取所有动态值域（只返回未删除的）
-    public List<Map> allDynamicDict() {
+    public List<Map<String, Object>> allDynamicDict() {
         Criteria criteria = new Criteria();
         criteria.orOperator(
             Criteria.where("isDeleted").is(0),
             Criteria.where("isDeleted").exists(false)
         );
 
-        List<Map> d = commonRepository.find(dynamicDictColName, criteria, Sort.by("code"));
+        List<Map<String, Object>> d = commonRepository.find(
+            dynamicDictColName,
+            criteria,
+            Sort.by("code")
+        );
         DataUtil.objectId2Str(d);
         return d;
     }
 
     // 根据编码获取动态值域（只返回未删除的）
-    public Map getDynamicDictByCode(String code) {
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> getDynamicDictByCode(String code) {
         Criteria criteria = Criteria.where("code").is(code);
         criteria.andOperator(
             new Criteria().orOperator(
@@ -138,7 +149,7 @@ public class DynamicDictService {
             )
         );
 
-        Map d = commonRepository.findOne(dynamicDictColName, criteria);
+        Map<String, Object> d = commonRepository.findOne(dynamicDictColName, criteria);
         if (d != null) {
             DataUtil.objectId2Str(d);
         }
@@ -146,7 +157,7 @@ public class DynamicDictService {
     }
 
     // 根据编码获取动态值域实体（只返回未删除的）
-    public List<Map> findByCode(String code) {
+    public List<Map<String, Object>> findByCode(String code) {
         return dynamicDictRepository.findByCode(code);
     }
 
@@ -159,7 +170,7 @@ public class DynamicDictService {
      */
     private String generateNewDictCode() throws Exception {
         // 查询所有以 DC 开头的值域编码并按数字部分排序（包括已删除的）
-        List<Map> dicts = commonRepository.find(
+        List<Map<String, Object>> dicts = commonRepository.find(
             dynamicDictColName,
             Criteria.where("code").regex("^DC\\d+\\.\\d+"),
             Sort.by(Sort.Direction.DESC, "code")
@@ -201,7 +212,6 @@ public class DynamicDictService {
             }
         } else {
             // 没有记录时，使用初始值DC00.001
-            majorNum = 0;
             minorNum = 1;
         }
 

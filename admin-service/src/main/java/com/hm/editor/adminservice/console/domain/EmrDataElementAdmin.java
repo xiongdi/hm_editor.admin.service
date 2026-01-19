@@ -1,7 +1,6 @@
 package com.hm.editor.adminservice.console.domain;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import lombok.Data;
@@ -131,7 +130,11 @@ public class EmrDataElementAdmin {
             "搜索编码",
             "创建时间",
         };
-        return Arrays.asList(s);
+        List<Object> result = new ArrayList<>();
+        for (String item : s) {
+            result.add(item);
+        }
+        return result;
     }
 
     public static String codeToName(String code) {
@@ -171,7 +174,6 @@ public class EmrDataElementAdmin {
                 name = "月/日";
                 break;
             case "datetime":
-                code = "datetime";
                 name = "日期 时间";
                 break;
             case "numbox":
@@ -224,8 +226,6 @@ public class EmrDataElementAdmin {
                 code = "datetime";
                 break;
             case "数字控件":
-                code = "numbox";
-                break;
             case "时:分:秒":
                 code = "numbox";
                 break;

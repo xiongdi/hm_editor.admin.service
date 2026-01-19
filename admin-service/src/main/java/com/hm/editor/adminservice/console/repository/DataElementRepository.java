@@ -84,8 +84,8 @@ public class DataElementRepository {
         return true;
     }
 
-    public List<Map> searchDataElement(String dataSourceName, String templateName) {
-        List<Map> list;
+    public List<Map<String, Object>> searchDataElement(String dataSourceName, String templateName) {
+        List<Map<String, Object>> list;
         Query query = new Query();
         query.addCriteria(
             Criteria.where("dataSourceName").is(dataSourceName).and("templateName").is(templateName)

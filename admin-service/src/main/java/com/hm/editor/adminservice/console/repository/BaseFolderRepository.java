@@ -118,8 +118,8 @@ public class BaseFolderRepository {
         }
     }
 
-    public Map getDataSet(Map<String, Object> param) {
-        Map _r = new HashMap();
+    public Map<String, Object> getDataSet(Map<String, Object> param) {
+        Map<String, Object> _r = new HashMap<>();
 
         Map<String, Integer> page = (Map<String, Integer>) param.get("page");
         int currentPage = page.get("currentPage");
@@ -137,15 +137,18 @@ public class BaseFolderRepository {
         if (td != null && td.containsKey("dataSourceSet")) {
             int size;
             Object o = td.get("dataSourceSet");
-            if (o instanceof List && (size = ((List) o).size()) > 0) {
-                List subo = (List) o;
+            if (o instanceof List && (size = ((List<?>) o).size()) > 0) {
+                @SuppressWarnings("unchecked")
+                List<Object> subo = (List<Object>) o;
 
                 final Object key = param.get("key");
 
                 if (key != null && !key.toString().trim().isEmpty()) {
-                    o = ((List) o).stream()
+                    @SuppressWarnings("unchecked")
+                    List<Object> filteredList = ((List<Object>) o).stream()
                         .filter(s -> {
-                            Map _s = (Map) s;
+                            @SuppressWarnings("unchecked")
+                            Map<String, Object> _s = (Map<String, Object>) s;
                             return (
                                 _s.containsKey("name") &&
                                 _s.get("name") != null &&
@@ -153,12 +156,15 @@ public class BaseFolderRepository {
                             );
                         })
                         .collect(Collectors.toList());
-                    if ((size = ((List) o).size()) == 0) {
+                    o = filteredList;
+                    if ((size = filteredList.size()) == 0) {
                         return _r;
                     }
                 }
                 if (size > (currentPage - 1) * pageSize) {
-                    subo = ((List) o).subList(
+                    @SuppressWarnings("unchecked")
+                    List<Object> sourceList = (List<Object>) o;
+                    subo = sourceList.subList(
                         (currentPage - 1) * pageSize,
                         Math.min(currentPage * pageSize, size)
                     );

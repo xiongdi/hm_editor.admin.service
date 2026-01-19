@@ -22,7 +22,7 @@ public class CommonService {
     @Autowired
     CommonRepository commonRepository;
 
-    public boolean checkAndSave(Map d, String colName, String uniqueKey, String... valueKey) {
+    public boolean checkAndSave(Map<String, Object> d, String colName, String uniqueKey, String... valueKey) {
         if (d == null || d.isEmpty()) {
             throw new BusinessException("数据异常");
         }
@@ -44,7 +44,7 @@ public class CommonService {
         return commonRepository.delData(id, colName);
     }
 
-    public Map pageData(
+    public Map<String, Object> pageData(
         String colName,
         String txt,
         int pageNo,
@@ -52,7 +52,7 @@ public class CommonService {
         String sortKey,
         String... key
     ) {
-        Map res = new HashMap();
+        Map<String, Object> res = new HashMap<>();
         Criteria criteria = new Criteria();
         if (StringUtils.isNotBlank(txt)) {
             criteria.orOperator(
@@ -62,7 +62,7 @@ public class CommonService {
             );
         }
         res.put("total", commonRepository.count(criteria, colName));
-        List<Map> data = new ArrayList<>();
+        List<Map<String, Object>> data = new ArrayList<>();
         if ((long) res.get("total") > 0) {
             Sort sort = null;
             if (StringUtils.isNotBlank(sortKey)) {
@@ -84,16 +84,16 @@ public class CommonService {
      * @param pageSize 每页记录数
      * @return 分页结果
      */
-    public Map pageData(
+    public Map<String, Object> pageData(
         String colName,
         Criteria criteria,
         int pageNo,
         int pageSize,
         String sortKey
     ) {
-        Map res = new HashMap();
+        Map<String, Object> res = new HashMap<>();
         res.put("total", commonRepository.count(criteria, colName));
-        List<Map> data = new ArrayList<>();
+        List<Map<String, Object>> data = new ArrayList<>();
         if ((long) res.get("total") > 0) {
             Sort sort = null;
             if (StringUtils.isNotBlank(sortKey)) {
@@ -110,7 +110,7 @@ public class CommonService {
     //        return
     // commonRepository.find(ContantUtil.DS_REFRENCE_COLLECTION_NAME,Criteria.where("type").is(type).and("code").is(code),Sort.by("createTime"));
     //    }
-    public List<Map> getAllRef(String type, String... code) {
+    public List<Map<String, Object>> getAllRef(String type, String... code) {
         Criteria cri = Criteria.where("type").is(type).and("code").in(code);
         String name = "";
         if ("数据集".equals(type)) {
@@ -121,7 +121,7 @@ public class CommonService {
         return getOneGroupRef(cri, name);
     }
 
-    private List<Map> getOneGroupRef(Criteria cri, String refName) {
+    private List<Map<String, Object>> getOneGroupRef(Criteria cri, String refName) {
         List<AggregationOperation> aggs = new ArrayList<>();
         aggs.add(Aggregation.match(cri));
 
@@ -134,7 +134,7 @@ public class CommonService {
     }
 
     public boolean doRefence(ObjectId id, String type, String code, String refCode) {
-        Map d = new HashMap();
+        Map<String, Object> d = new HashMap<>();
         d.put("_id", id);
         d.put("type", type);
         d.put("code", code);
@@ -181,7 +181,7 @@ public class CommonService {
         return true;
     }
 
-    public List<Map> refList(String type, String refCode) {
+    public List<Map<String, Object>> refList(String type, String refCode) {
         String refName = "";
         if ("数据元".equals(type)) {
             refName = ContantUtil.DS_COLLECTION_NAME;
@@ -196,7 +196,7 @@ public class CommonService {
         aggs.add(Aggregation.unwind("r1"));
         aggs.add(Aggregation.sort(Sort.Direction.ASC, "createTime"));
         aggs.add(Aggregation.project("r1.code", "r1.name"));
-        List<Map> d = commonRepository.agg(aggs, ContantUtil.DS_REFRENCE_COLLECTION_NAME);
+        List<Map<String, Object>> d = commonRepository.agg(aggs, ContantUtil.DS_REFRENCE_COLLECTION_NAME);
         return d
             .stream()
             .filter(_d -> _d.get("name") != null && !_d.get("name").toString().isEmpty())
@@ -210,7 +210,7 @@ public class CommonService {
         );
     }
 
-    public List<Map> refCount(String type, List<String> refCode) {
+    public List<Map<String, Object>> refCount(String type, List<String> refCode) {
         Criteria cri = Criteria.where("type").is(type).and("refCode").in(refCode);
         List<AggregationOperation> aggs = new ArrayList<>();
         aggs.add(Aggregation.match(cri));

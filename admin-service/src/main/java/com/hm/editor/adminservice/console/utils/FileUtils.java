@@ -90,14 +90,16 @@ public class FileUtils {
         return newFile(file(path));
     }
 
-    public static List<Object> readObject(File f, Class cla) throws IOException {
+    public static List<Object> readObject(File f, Class<?> cla) throws IOException {
         ObjectInputStream ois = null;
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(f);
             ois = new ObjectInputStream(fis);
             Object r = ois.readObject();
-            return (List) r;
+            @SuppressWarnings("unchecked")
+            List<Object> list = (List<Object>) r;
+            return list;
         } catch (Exception ioe) {
             throw new IOException(ioe.toString());
         } finally {
