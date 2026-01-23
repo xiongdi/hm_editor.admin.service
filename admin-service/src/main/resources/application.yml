@@ -2,3 +2,10 @@ server:
   servlet:
     context-path: /hmEditor/admin-service
   port: 7070
+spring:
+  data:
+    mongodb:
+      username: zkzs
+      password: zkzs@1818
+      database: hm_editor
+      authentication-database: admin
